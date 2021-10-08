@@ -104,7 +104,7 @@ class LinkedList {
   // 环验证
   checkCircle() {
     // 快慢指针，存在环路一定会相遇
-    let fast = this.head.next;
+    let fast = this.head;
     let slow = this.head;
     while (fast !== null && fast.next !== null) {
       fast = fast.next.next;

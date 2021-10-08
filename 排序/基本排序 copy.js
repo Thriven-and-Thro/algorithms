@@ -23,7 +23,7 @@ const insertionSort = (arr) => {
     const temp = arr[i];
     let j = i - 1;
     for (j; j >= 0; j--) {
-      if (temp < arr[j]) {
+      if (arr[j] > temp) {
         arr[j + 1] = arr[j];
       } else {
         break;
@@ -40,7 +40,7 @@ const selectionSort = (arr) => {
   for (let i = 0; i < arr.length - 1; i++) {
     let minIndex = i;
     for (let j = i + 1; j < arr.length; j++) {
-      if (arr[minIndex] >= arr[j]) {
+      if (arr[j] <= arr[minIndex]) {
         minIndex = j;
       }
     }

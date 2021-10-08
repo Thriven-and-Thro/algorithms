@@ -20,9 +20,9 @@ const mergeArr = (left, right) => {
 // 对不能再拆的数组放入合并函数
 const mergeSort = (arr) => {
   if (arr.length <= 1) return arr;
-  let middle = Math.floor(arr.length / 2);
-  let left = arr.slice(0, middle);
-  let right = arr.slice(middle);
+  const middle = Math.floor(arr.length / 2);
+  const left = arr.slice(0, middle);
+  const right = arr.slice(middle);
   return mergeArr(mergeSort(left), mergeSort(right));
 };
 
