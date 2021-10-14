@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class Node {
+      constructor(data) {
+        this.data = data;
+        this.left = null;
+        this.right = null;
+      }
+    }
+
+    class LinkTree {
+      constructor() {
+        this.root = null;
+      }
+      insert(data, parentData, direction) {
+        const newNode = new Node(data);
+        // 树为空
+        if (this.root === null) {
+          this.root = newNode;
+          // 不为空
+        } else {
+          // 搜索该值的节点
+          const parent = this.search(parentData, this.root);
+          if (!parent) return -1;
+          // 接上
+          parent[direction] = newNode;
+        }
+      }
+
+      // 搜索
+      search(data, root) {
+        if (root === null) return;
+        if (root.data === data) return root;
+        // 递归
+        const leftData = this.search(data, root.left);
+        const rightData = this.search(data, root.right);
+        // 哪边有值返回哪边
+        return leftData || rightData
+      }
+
+      // 先序遍历
+      preOrder(root) {
+        if (root === null) return;
+        console.log(root.data);
+        this.preOrder(root.left);
+        this.preOrder(root.right);
+      }
+
+      // 中序遍历
+      inOrder(root) {
+        if (root === null) return;
+        this.inOrder(root.left);
+        console.log(root.data);
+        this.inOrder(root.right);
+      }
+
+      // 后序遍历
+      postOrder(root) {
+        if (root === null) return;
+        this.postOrder(root.left);
+        this.postOrder(root.right);
+        console.log(root.data);
+      }
+
+      // 按层遍历-增加哨兵
+      layerOrder(root) {
+        const head = new Node('head')
+        head.left = root
+        this.layerOrderOpearation(head)
+      }
+
+      // 按层遍历-操作
+      layerOrderOpearation(root) {
+        if (root === null) return -1
+        if (root.left) {
+          console.log(root.left.data);
+        }
+        if (root.right) {
+          console.log(root.right.data);
+        }
+        this.layerOrderOpearation(root.left)
+        this.layerOrderOpearation(root.right)
+      }
+
+      // 高度
+      getTreeHigh(root) {
+        let high = -1
+        high = this.getTreeHighOpearation(root, high)
+        return high
+      }
+
+      getTreeHighOpearation(root, high) {
+        console.log();
+        if (root === null) return high
+        let leftHigh = this.getTreeHighOpearation(root.left, high) + 1
+        let rightHigh = this.getTreeHighOpearation(root.left, high) + 1
+        return leftHigh || rightHigh
+      }
+    }
+
+    console.log("-----------------test-----------------");
+    let tree1 = new LinkTree();
+    tree1.insert("a");
+    tree1.insert("b", "a", "left");
+    tree1.insert("c", "a", "right");
+    tree1.insert("d", "b", "left");
+    tree1.insert("e", "b", "right");
+    tree1.insert("f", "c", "left");
+    tree1.insert("g", "c", "right");
+    console.log(tree1.root);
+    console.log("---------------先序遍历---------------");
+    tree1.preOrder(tree1.root);
+    console.log("---------------中序遍历---------------");
+    tree1.inOrder(tree1.root);
+    console.log("---------------后序遍历---------------");
+    tree1.postOrder(tree1.root);
+    console.log("---------------按层遍历---------------");
+    tree1.layerOrder(tree1.root);
+    console.log("---------------求树高度---------------");
+    let high = tree1.getTreeHigh(tree1.root)
+    console.log(high);
+    tree1.insert("h", "d", "left");
+    high = tree1.getTreeHigh(tree1.root)
+    console.log(high);
+  </script>
+</body>
+
+</html>
