@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class Node {
+      constructor(data) {
+        this.data = data;
+        this.next = null;
+      }
+    }
+
+    class LinkGraph {
+      constructor() {
+        this.graph = [];
+        this.v = [];
+      }
+
+      // 插入点
+      insertVertexes(vArr) {
+        this.v = vArr;
+        for (let i = 0; i < vArr.length; i++) {
+          this.graph[i] = new Node(vArr[i]);
+        }
+      }
+
+      // 插入边（无向领接表）
+      insertEdge(v1, v2) {
+        // console.log(v1, v2);
+        let n1 = this.insertEdgeSearch(v1)
+        let n2 = this.insertEdgeSearch(v2)
+
+        this.insertEdgeOperation(n1, v2)
+        this.insertEdgeOperation(n2, v1)
+      }
+
+      insertEdgeSearch(v1) {
+        let n1
+        for (let i = 0; i < this.v.length; i++) {
+          if (this.v[i] === v1) n1 = i;
+          if (n1 !== undefined) break;
+        }
+        if (n1 === undefined) console.log('没有该顶点');
+        return n1
+      }
+
+      insertEdgeOperation(n1, v2) {
+        let p = this.graph[n1]
+        while (p.next !== null) {
+          // 重复不录入
+          if (p.data === v2 || p.next.data === v2) return
+          p = p.next
+        }
+        p.next = new Node(v2);
+      }
+
+      // BFC广度优先搜索
+      bfc(s, t) {
+        // 1.记录节点是否访问过
+        let visited = []
+        // 2.记录路径
+        let prev = []
+        // let queue = []
+
+        const sn = this.insertEdgeSearch(s)
+        // 3.访问节点的所有相连节点
+        for (let i = sn; i < this.v.length; i++) {
+          let p = this.graph[i]
+          while (p !== null) {
+            const n = this.insertEdgeSearch(p.data)
+            if (!visited[n]) {
+              visited[n] = 1
+              if (p !== this.graph[i]) prev[n] = this.graph[i].data
+              // 找到目标
+              if (p.data === t) {
+                this.print(prev, s, t)
+                return
+              }
+            }
+            p = p.next
+          }
+        }
+      }
+
+      // 打印路径
+      print(prev, s, t) {
+        let tn = this.insertEdgeSearch(t)
+        if (t !== s) {
+          this.print(prev, s, this.v[prev[tn]])
+        }
+        console.log(' ' + t);
+      }
+
+      // DFS深度优先搜索
+      dfs(s, t) {
+        let visited = []
+        let prev = []
+        let found = false
+
+        this.recurDfs(s, t, visited, prev, found)
+        console.log(prev);
+        this.print(prev, s, t)
+      }
+
+      // 遍历
+      recurDfs(s, t, visited, prev, found) {
+        if (found) return
+        if (s === t) {
+          found = true
+          return
+        }
+        // console.log(s);
+        const sn = this.insertEdgeSearch(s)
+        let p = this.graph[sn]
+        while (p !== null) {
+          const pn = this.insertEdgeSearch(p.data)
+          if (!visited[pn]) {
+            visited[pn] = 1
+            if (pn !== sn) prev[pn] = sn
+            this.recurDfs(p.data, t, visited, prev, found)
+          }
+          p = p.next
+        }
+      }
+    }
+
+
+
+    console.log("-------------test-------------");
+    let g = new LinkGraph();
+    g.insertVertexes([0, 1, 2, 3, 4, 5, 6, 7]);
+    g.insertEdge(0, 1);
+    g.insertEdge(0, 3);
+    g.insertEdge(1, 2);
+    g.insertEdge(1, 4);
+    g.insertEdge(2, 5);
+    g.insertEdge(3, 4);
+    g.insertEdge(4, 5);
+    g.insertEdge(4, 6);
+    g.insertEdge(5, 7);
+    g.insertEdge(6, 7);
+    console.log(g);
+    console.log("-------------BFC-------------");
+    g.bfc(0, 7)
+    console.log("-------------DFS-------------");
+    let g1 = new LinkGraph();
+    g1.insertVertexes([1, 2, 3, 4, 5, 6, 7, 8]);
+    g1.insertEdge(1, 2);
+    g1.insertEdge(1, 4);
+    g1.insertEdge(2, 5);
+    g1.insertEdge(2, 3);
+    g1.insertEdge(3, 6);
+    g1.insertEdge(4, 5);
+    g1.insertEdge(5, 6);
+    g1.insertEdge(5, 7);
+    g1.insertEdge(6, 8);
+    g1.insertEdge(7, 8);
+    g1.dfs(1, 7)
+
+
+  </script>
+</body>
+
+</html>
