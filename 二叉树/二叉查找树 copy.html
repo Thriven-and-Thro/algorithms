@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class Node {
+      constructor(data) {
+        this.data = data
+        this.left = null
+        this.right = null
+      }
+    }
+
+    class SearchTree {
+      constructor() {
+        this.root = null
+      }
+
+      searchChild(data) {
+        let p = this.root
+        let prep
+        while (p !== null) {
+          prep = p
+          data >= p.data ? p = p.right : p = p.left
+        }
+        return prep
+      }
+
+      insert(data) {
+        const newNode = new Node(data)
+        if (!this.root) {
+          this.root = newNode
+        } else {
+          const prep = this.searchChild(data)
+          data >= prep.data ? prep.right = newNode : prep.left = newNode
+        }
+      }
+
+      // 中序遍历（顺序输出）
+      inOrder(root) {
+        if (root === null) return -1
+        this.inOrder(root.left)
+        console.log(root.data);
+        this.inOrder(root.right)
+      }
+
+      searchData(data) {
+        let p = this.root
+        let prep
+        while (p !== null) {
+          if (p.data === data) break
+          prep = p
+          data > p.data ? p = p.right : p = p.left
+        }
+        if (p === null) return -1
+        return { p, prep }
+      }
+
+      // 删除操作
+      delete(data) {
+        if (!this.searchData(data)) return -1
+        const { p, prep } = this.searchData(data)
+
+        if (!p.left && !p.right) {
+          if (!prep) {
+            this.root = null
+          } else {
+            p.data > prep.data ? prep.right = null : prep.left = null
+          }
+
+        } else if (p.left && p.right) {
+          let dp = p.right
+          while (dp.left !== null) {
+            dp = dp.left
+          }
+          this.delete(dp.data)
+
+          if (!prep) {
+            this.root = dp
+          } else {
+            p.data > prep.data ? prep.right = dp : prep.left = dp
+          }
+          dp.left = p.left
+          dp.right = p.right
+
+        } else {
+          let pc
+          p.left ? pc = p.left : pc = p.right
+          if (!prep) {
+            this.root = pc
+          } else {
+            p.data > prep.data ? prep.right = pc : prep.left = pc
+          }
+        }
+      }
+    }
+
+    console.log("-------------test--------------");
+    let tree1 = new SearchTree()
+    tree1.insert(30)
+    tree1.insert(15)
+    tree1.insert(35)
+    tree1.insert(20)
+    tree1.insert(7)
+    console.log(tree1.root);
+    console.log("------中序遍历（顺序输出）-------");
+    tree1.inOrder(tree1.root)
+    console.log("------------删除操作------------");
+    tree1.insert(40)
+    tree1.delete(30)
+    console.log(tree1.root);
+    tree1.inOrder(tree1.root)
+
+  </script>
+
+</body>
+
+</html>

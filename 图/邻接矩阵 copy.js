@@ -1,22 +1,16 @@
 class ArrayGraph {
   constructor(direction) {
-    // 邻接矩阵
     this.graph = [];
-    // 点数组
     this.v = [];
-    // 边数
-    this.enum = 0;
-    // 是否有向
     this.direction = direction;
   }
 
   // 插入点
   insertVertexes(vArr) {
     this.v = vArr;
-    // 初始化邻接矩阵
-    for (let i = 0; i < this.v.length; i++) {
+    for (let i = 0; i < vArr.length; i++) {
       this.graph[i] = [];
-      for (let j = 0; j < this.v.length; j++) {
+      for (let j = 0; j < vArr.length; j++) {
         this.graph[i][j] = 0;
       }
     }
@@ -25,19 +19,18 @@ class ArrayGraph {
   // 插入边
   insertEdge(v1, v2) {
     let n1, n2;
-    // 在点数组里找值的对应下标
     for (let i = 0; i < this.v.length; i++) {
-      if (this.v[i] === v1) n1 = i;
-      if (this.v[i] === v2) n2 = i;
+      if (v1 === this.v[i]) n1 = i;
+      if (v2 === this.v[i]) n2 = i;
       if (n1 !== undefined && n2 !== undefined) break;
     }
-    // 有向
-    if (!this.direction) {
+    if (n1 === undefined || n2 === undefined) return -1;
+
+    if (this.direction) {
       this.graph[n1][n2] = 1;
-      this.graph[n2][n1] = 1;
-      // 无向
     } else {
       this.graph[n1][n2] = 1;
+      this.graph[n2][n1] = 1;
     }
   }
 }

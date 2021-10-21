@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    class Node {
+      constructor(data) {
+        this.data = data;
+        this.next = null;
+      }
+    }
+
+    class LinkGraph {
+      constructor() {
+        this.graph = [];
+        this.v = [];
+      }
+
+      // 插入点
+      insertVertexes(vArr) {
+        this.v = vArr
+        for (let i = 0; i < vArr.length; i++) {
+          this.graph[i] = new Node(vArr[i])
+        }
+      }
+
+      // 插入边
+      insertEdge(v1, v2) {
+        const newNode = new Node(v2)
+        let n1
+        for (let i = 0; i < this.v.length; i++) {
+          if (this.v[i] === v1) n1 = i
+          if (n1 !== undefined) break
+        }
+        if (n1 === undefined) return -1
+
+        let p = this.graph[n1]
+        let prep
+        while (p !== null) {
+          if (p.data === v2) return -1
+          prep = p
+          p = p.next
+        }
+        prep.next = newNode
+      }
+
+      // 逆领接表
+      resert() {
+        let g2 = new LinkGraph()
+        g2.insertVertexes(this.v)
+        this.graph.forEach(value => {
+          let p = value.next
+          while (p !== null) {
+            g2.insertEdge(p.data, value.data)
+            p = p.next
+          }
+        })
+        return g2
+      }
+    }
+
+    console.log("-------------test-------------");
+    let g = new LinkGraph();
+    g.insertVertexes([1, 2, 3, 4, 5]);
+    g.insertEdge(1, 2);
+    g.insertEdge(2, 3);
+    g.insertEdge(2, 5);
+    g.insertEdge(2, 4);
+    g.insertEdge(4, 1);
+    g.insertEdge(4, 2);
+    g.insertEdge(5, 4);
+    g.insertEdge(5, 3);
+    console.log(g);
+    let g2 = g.resert()
+    console.log(g2);
+
+
+  </script>
+</body>
+
+</html>

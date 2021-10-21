@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /**
+     * 1.散列表-单链表法
+     */
+
+    class Node {
+      constructor(value) {
+        this.value = value;
+        this.next = null;
+      }
+    }
+
+    class Item {
+      constructor(key, value) {
+        this.key = key;
+        this.value = value;
+      }
+    }
+
+    class HashTable {
+      constructor() {
+        this.store = [];
+      }
+
+      // 散列函数
+      hash(string) {
+        var hash = 0;
+        for (var i = 0; i < string.length; i++) {
+          hash += string.charCodeAt(i);
+        }
+        return hash % 10;
+      }
+
+      // 写入散列表
+      put(item) {
+        if (typeof item.key !== "string") return -1
+
+        const newNode = new Node(item)
+        const hash = this.hash(item.key)
+
+        // 该槽还没有节点
+        if (!this.store[hash]) {
+          // 哨兵
+          this.store[hash] = new Node('head')
+          this.store[hash].next = newNode
+
+        } else {
+          let p = this.store[hash].next
+          let prep = this.store[hash]
+          while (p !== null) {
+            // 有重复的键，覆盖
+            if (p.value.key === item.key) {
+              prep.next = newNode
+              prep.next.next = p.next
+              return
+            }
+            prep = p
+            p = p.next
+          }
+          prep.next = newNode
+        }
+      }
+
+      // 读取
+      get(key) {
+        const hash = this.hash(key)
+        let p = this.store[hash].next
+        while (p !== null) {
+          if (p.value.key === key) return p.value
+          p = p.next
+        }
+        return false
+      }
+
+      // 删除节点
+      remove(key) {
+        const hash = this.hash(key)
+        let p = this.store[hash].next
+        let prep = this.store[hash]
+        while (p !== null) {
+          if (p.value.key === key) {
+            prep.next = p.next
+            return true
+          }
+          prep = p
+          p = p.next
+        }
+        return false
+      }
+
+      // 清空
+      clear() {
+        this.store = [];
+      }
+
+      // 打印
+      print() {
+        this.store.forEach(value => {
+          let p = value.next
+          while (p !== null) {
+            console.log(p.value);
+            p = p.next
+          }
+        })
+      }
+    }
+
+    // 测试函数
+    function baseTest() {
+      let hashTable = new HashTable();
+      for (let i = 0; i < 50; i++) {
+        hashTable.put(new Item(`test${i}`, `some value${i}`));
+        hashTable.put(new Item(`test${50 - i}`, `some value${i}`));
+      }
+      console.log(hashTable);
+      console.log(hashTable.remove("test49"));
+      console.log(hashTable.get("test10"));
+      console.log(hashTable.get("test49"));
+      hashTable.print();
+    }
+
+    baseTest();
+
+  </script>
+</body>
+
+</html>
