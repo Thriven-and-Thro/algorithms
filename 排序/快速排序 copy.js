@@ -32,7 +32,7 @@ const quickSort = (arr, left, right) => {
     const pivot = right;
     let pivotIndex = partition(arr, pivot, left, right);
     quickSort(arr, left, pivotIndex - 1 <= left ? left : pivotIndex - 1);
-    quickSort(arr, pivotIndex + 1 >= right ? right : pivotIndex, right);
+    quickSort(arr, pivotIndex + 1 >= right ? right : pivotIndex + 1, right);
   }
 };
 

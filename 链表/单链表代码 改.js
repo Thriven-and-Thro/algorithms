@@ -114,6 +114,7 @@ class LinkedList {
     return false;
   }
 
+  // 该算法还是差了点，可以使用双指针
   // 删除倒数第k个节点
   removeByIndexFromEnd(index) {
     // 反转成正向进行删除后再反转

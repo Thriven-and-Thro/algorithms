@@ -15,3 +15,9 @@ for (let i = 0; i <= 4; i++) {
 // console.log(a);
 // a[0][0] = 0;
 // console.log(a);
+
+let b = [1, 2, 3];
+let temp = b[1];
+b[1] = b[0];
+b[0] = temp;
+console.log(b);

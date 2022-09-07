@@ -42,11 +42,14 @@ const quickSort = (arr, left, right) => {
 };
 
 const testArr = [];
+const testArr1 = [1, 2, 3, 2, 2, 2, 5, 4, 2];
 let i = 0;
 while (i < 10) {
   testArr.push(Math.floor(Math.random() * 1000));
   i++;
 }
-console.log("unsort", testArr);
-quickSort(testArr, 0, testArr.length - 1);
-console.log("sort", testArr);
+// console.log("unsort", testArr);
+// quickSort(testArr, 0, testArr.length - 1);
+quickSort(testArr1, 0, testArr1.length - 1);
+// console.log("sort", testArr);
+console.log("sort", testArr1);
